@@ -14,3 +14,9 @@ cd entropy-experiment
 cmake .
 cmake --build . --config Release
 ```
+
+Instalacja zależności do kompilacji na Ubuntu 19.04:
+```
+sudo apt install build-essential git cmake udev libudev-dev libopenal-dev libflac-dev libvorbis-dev libxrandr-dev libfreetype6-dev
+```
+

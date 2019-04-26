@@ -1,5 +1,6 @@
 *.vcxproj*
 *.sln
+bin/
 
 # Created by https://www.gitignore.io/api/vim,cmake,codeblocks,visualstudio,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=vim,cmake,codeblocks,visualstudio,visualstudiocode
@@ -404,4 +405,8 @@ healthchecksdb
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
 
+<<<<<<< Updated upstream
 # End of https://www.gitignore.io/api/vim,cmake,codeblocks,visualstudio,visualstudiocode
+=======
+# End of https://www.gitignore.io/api/cmake,codeblocks,visualstudio,visualstudiocode
+>>>>>>> Stashed changes
