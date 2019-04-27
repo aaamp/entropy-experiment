@@ -13,6 +13,8 @@ endif()
 set(BUILD_SHARED_LIBS FALSE)
 
 set(SFML_USE_STATIC_STD_LIBS TRUE)
+set(SFML_BUILD_NETWORK FALSE)
+set(SFML_BUILD_AUDIO FALSE)
 
 add_subdirectory(thirdparty/SFML)
 add_subdirectory(src)
