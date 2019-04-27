@@ -1,4 +1,4 @@
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/Release)
 add_executable(entropy_experiment main.cpp)
 
 target_include_directories(entropy_experiment PRIVATE ${SFML_INCLUDE_DIR})
