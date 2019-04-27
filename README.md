@@ -1,5 +1,7 @@
 # TODO: Ładniejszy plik readme
 
+[![Build status](https://ci.appveyor.com/api/projects/status/fcs8eqfluka7o7jg?svg=true)](https://ci.appveyor.com/project/Antollo/entropy-experiment)
+
 ### Co jest potrzebne?
 
 - `git`

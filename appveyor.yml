@@ -1,0 +1,15 @@
+version: 0.0.{build}
+image:
+    - Visual Studio 2017
+    - Ubuntu
+init:
+    - sh: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 70 --slave /usr/bin/g++ g++ /usr/bin/g++-8
+before_build:
+    - git submodule update --init --recursive
+    - cmake .
+build_script:
+    - cmake --build . --config Release
+artifacts:
+    - path: bin/Release
+      name: artifacts
+      type: zip
