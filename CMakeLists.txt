@@ -8,6 +8,8 @@ project(entropy-experiment)
 
 if(MSVC)
     add_compile_options(/W3 /O2 /MT)
+else()
+    add_compile_options(-O3) 
 endif()
 
 set(BUILD_SHARED_LIBS FALSE)
