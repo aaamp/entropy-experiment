@@ -1,15 +1,32 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "particle.h"
+#include "symul.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
     particle x({1,1},{2,2});
     x.update(1);
     std::cout << x.getPosition() << std::endl;
+
+	symul symulation = symul(2, 0.1, vec2f(200, 100), vec2f(100, 100), 0.2);
+
+	for(int tick = 0; tick < 10; tick++)
+	{
+		symulation.moveParticles(1);
+
+		std::cout << "tick " << tick << std::endl;
+		for(auto i : symulation.getParticles())
+			std::cout << i.getPosition().getX() << ' ' << i.getPosition().getY() << std::endl;
+		std::cout << std::endl;
+			
+	}
+
+
+	/*
+    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+    sf::CircleShape shape(100.f);
+    shape.setFillColor(sf::Color::Green);
     while (window.isOpen())
     {
         sf::Event event;
@@ -23,6 +40,6 @@ int main()
         window.draw(shape);
         window.display();
     }
-
+	*/
     return 0;
 }
