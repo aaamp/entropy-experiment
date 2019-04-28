@@ -27,7 +27,7 @@ public:
     }
     vec2 getNormalized() const
     {
-        return *this * getLength();
+        return *this * (1/getLength());
     }
     vec2& operator +=(const vec2& v)
     {
@@ -74,7 +74,7 @@ std::ostream& operator <<(std::ostream& out, const vec2<T>& v)
 }
 
 template <class T>
-vec2<T> operator *(const T& s, const vec1<T>& v)
+vec2<T> operator *(const T& s, const vec2<T>& v)
 {
     return vec2<T>(v.getX() * s, v.getY() * s);
 }
