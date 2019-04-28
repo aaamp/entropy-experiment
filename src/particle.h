@@ -6,8 +6,8 @@
 class particle
 {
 public:
-	particle()
-		: position(vec2f(0, 0)), velocity(vec2f(0, 0)) {}
+    particle()
+        : position(vec2f(0, 0)), velocity(vec2f(0, 0)) {}
     particle(const vec2f& Position, const vec2f& Velocity)
         : position(Position), velocity(Velocity) {}
     float getEnergy() const { return velocity.getSquaredLength() / 2; }
