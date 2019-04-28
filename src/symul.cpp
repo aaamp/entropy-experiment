@@ -2,41 +2,36 @@
 #include "symul.h"
 #include <iostream>
 #include <thread>
-#include <chrono>
 
 const std::vector<particle>& symul::moveParticles(const float& timeTick)
 {
-    asyncPrepareMove(timeTick);
-    return swapPrepared();
+    particles = afterCollisions.get();
+
+    for(auto& p : particles)
+        p.update(timeTick);
+
+    afterCollisions = std::async(std::launch::async, collide, particles);
+
+    return particles;
 }
 
-const std::vector<particle>& symul::asyncPrepareMove(const float& timeTick)
+std::vector<particle> symul::collide(std::vector<particle> fparticles)
 {
-    futureParticles = particles;
-
-    // todo actual symulation with collisions
-    for(auto& p : futureParticles)
-        p.update(timeTick);
+    // todo collisions 
 
     // temporary, just to simulate this being the most time consuming part of the whole thing
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    return futureParticles;
-}
-
-const std::vector<particle>& symul::swapPrepared()
-{
-    particles.swap(futureParticles);
-    return particles;
+    return fparticles;
 }
 
 symul::symul(const int& n, const float& r, const vec2f& boxS, const vec2f& iniBox, const float& maxspeed)
-    : particleR(r), box(boxS), particles(n)
+    : particleR(r), box(boxS), particles(n) 
 {
-    // todo random particles
+    // todo random particles in proper box
     for(int i = 0; i < n; i++)
-    {
         particles[i] = particle(vec2f(i, i), vec2f(maxspeed, -maxspeed));
-    }
+
+    afterCollisions = std::async(std::launch::async, collide, particles);
 }
 

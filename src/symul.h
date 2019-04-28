@@ -2,6 +2,9 @@
 #define SYMUL_H_
 
 #include <vector>
+#include <thread>
+#include <chrono>
+#include <future>
 #include "vec2.h"
 #include "particle.h"
 
@@ -18,16 +21,18 @@ public:
     const vec2f& getBox() const { return box; }
     const float& getParticleR() { return particleR; }
 
+    // move particles by given time
+    // also spawns new thread where it will check for collisions
     const std::vector<particle>& moveParticles(const float& timeTick);
 
-    const std::vector<particle>& asyncPrepareMove(const float& timeTick);
-
-    const std::vector<particle>& swapPrepared();
 
 private:
-    std::vector<particle> particles, futureParticles;
+    std::vector<particle> particles;
     vec2f box;
     float particleR;
+
+    std::future<std::vector<particle>> afterCollisions;
+    static std::vector<particle> collide(std::vector<particle> fparticles);
 };
 
 
