@@ -1,8 +1,11 @@
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/Release)
 add_executable(entropy_experiment main.cpp symul.cpp)
 
+SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread")
+find_package (Threads)
+
 target_include_directories(entropy_experiment PRIVATE ${SFML_INCLUDE_DIR})
-target_link_libraries(entropy_experiment sfml-graphics sfml-window sfml-system)
+target_link_libraries(entropy_experiment sfml-graphics sfml-window sfml-system ${CMAKE_THREAD_LIBS_INIT})
 # sfml-audio sfml-network są raczej niepotrzebne
 target_compile_definitions(entropy_experiment PRIVATE SFML_STATIC)
 

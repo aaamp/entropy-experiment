@@ -1,6 +1,8 @@
 
 #include "symul.h"
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 const std::vector<particle>& symul::moveParticles(const float& timeTick)
 {
@@ -15,6 +17,9 @@ const std::vector<particle>& symul::asyncPrepareMove(const float& timeTick)
 	// todo actual symulation with collisions
 	for(auto& p : futureParticles)
 		p.update(timeTick);
+
+	// temporary, just to simulate this being the most time consuming part of the whole thing
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 
 	return futureParticles;
 }

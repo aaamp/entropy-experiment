@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <thread>
 #include <iostream>
 #include "particle.h"
 #include "symul.h"
@@ -13,13 +14,15 @@ int main()
 
 	for(int tick = 0; tick < 10; tick++)
 	{
-		symulation.moveParticles(1);
+		std::thread th(&symul::asyncPrepareMove, &symulation, 1);
 
 		std::cout << "tick " << tick << std::endl;
 		for(auto i : symulation.getParticles())
 			std::cout << i.getPosition().getX() << ' ' << i.getPosition().getY() << std::endl;
 		std::cout << std::endl;
-			
+
+		th.join();
+		symulation.swapPrepared();
 	}
 
 
