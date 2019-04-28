@@ -25,6 +25,10 @@ public:
     {
         return std::atan2(y, x);
     }
+    vec2 getNormalized() const
+    {
+        return *this * getLength();
+    }
     vec2& operator +=(const vec2& v)
     {
         x += v.x;
@@ -51,9 +55,13 @@ public:
     {
         return vec2(x - v.x, y - v.y);
     }
-    vec2 operator *(floatingType s) const
+    vec2 operator *(const floatingType& s) const
     {
         return vec2(x * s, y * s);
+    }
+    floatingType operator *(const vec2& v) const // Dot product
+    {
+        return x * v.x + y * v.y;
     }
 private:
     floatingType x, y;
@@ -63,6 +71,12 @@ template <class T>
 std::ostream& operator <<(std::ostream& out, const vec2<T>& v)
 {
     return out << "{" << v.getX() << ", " << v.getY() << "}";
+}
+
+template <class T>
+vec2<T> operator *(const T& s, const vec1<T>& v)
+{
+    return vec2<T>(v.getX() * s, v.getY() * s);
 }
 
 using vec2f = vec2<float>; 
