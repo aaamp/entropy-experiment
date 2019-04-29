@@ -38,7 +38,7 @@ int main()
 
         particicles = symulation.getParticles();
         std::future<void> task = std::async(std::launch::async, [&symulation]() {
-            symulation.moveParticles(1);
+            symulation.moveParticles();
         });
         
         display.drawParticles(particicles);
