@@ -15,24 +15,25 @@ int main()
     display.zoom(0.2);
     display.setCenter(100,50);
 
-    std::mt19937 mt_rand(time(0));
-    std::cout << mt_rand.max() << std::endl;
-    std::cout << mt_rand.min() << std::endl;
-
+    /*
     particle x({1,1},{2,2});
     x.update(1);
     std::cout << x.getPosition() << std::endl;
+    */
 
+    /*
     particle x2({0,0},{3,2});
     particle y({6,0},{1,3});
     x2.collideWith(y);
     std::cout << x2.getVelocity() << " " << y.getVelocity() << std::endl;
+    */
 
     symul symulation = symul(100, 2, vec2f(200, 100), vec2f(100, 100), 0.3);
 
     auto lastTime = std::chrono::high_resolution_clock::now();
-    for(int tick = 0; tick < 1000; tick++)
+    for(int tick = 0; tick < 100000; tick++)
     {
+        std::cout << "tick " << tick << std::endl;
         /*
        std::cout << "tick " << tick << std::endl;
        for(auto i : symulation.getParticles())
