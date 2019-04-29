@@ -26,7 +26,7 @@ void displ::drawParticles(const std::vector<particle>& p)const
 	
 	window.draw(rectangle);*/
 
-	sf::CircleShape circle;
+	sf::CircleShape circle(radius, 20);
 	circle.setRadius(radius);
 	circle.setFillColor(sf::Color::Green);
 	circle.setOutlineThickness(0.01);
@@ -34,7 +34,7 @@ void displ::drawParticles(const std::vector<particle>& p)const
 	
 	for(const auto& i : p)
 	{
-		circle.setPosition(i.getPosition().getX(), i.getPosition().getY());
+		circle.setPosition(i.getPosition().getX() - radius, i.getPosition().getY() - radius);
 		window.draw(circle);
 	}
 	
@@ -64,7 +64,7 @@ void displ::pollEvents() const
         if (event.type == sf::Event::MouseWheelScrolled)
         {
             view = window.getView();
-            if (event.mouseWheelScroll.delta < 0.f && view.getSize().x/(float)window.getSize().x + view.getSize().y/(float)window.getSize().y < 0.001f)
+            if (event.mouseWheelScroll.delta < 0.f && view.getSize().x/(float)window.getSize().x + view.getSize().y/(float)window.getSize().y < 0.01f)
                 break;
             if (event.mouseWheelScroll.delta > 0.f && view.getSize().x/(float)window.getSize().x + view.getSize().y/(float)window.getSize().y > 1.f)
                 break;

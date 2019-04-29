@@ -13,6 +13,8 @@ public:
         : x(X), y(Y) {}
     const floatingType& getX() const { return x; }
     const floatingType& getY() const { return y; }
+    void setX(const floatingType& v) { x = v; }
+    void setY(const floatingType& v) { y = v; }
     floatingType getLength() const
     {
         return std::sqrt(x*x + y*y);

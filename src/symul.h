@@ -32,7 +32,7 @@ private:
     float particleR;
 
     std::future<std::vector<particle>> afterCollisions;
-    static std::vector<particle> collide(std::vector<particle> fparticles);
+    std::vector<particle> collide(std::vector<particle> fparticles);
 };
 
 
