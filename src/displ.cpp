@@ -34,7 +34,7 @@ void displ::drawParticles(const std::vector<particle>& p)const
 	
 	for(const auto& i : p)
 	{
-		circle.setPosition(i.getPosition().getX(), i.getPosition().getY());
+		circle.setPosition(i.getPosition().getX() - radius, i.getPosition().getY() - radius);
 		window.draw(circle);
 	}
 	
