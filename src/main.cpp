@@ -13,21 +13,24 @@ int main()
 	display.setCenter(2,2);
 
     symul symulation = symul(2, 0.1, vec2f(200, 100), vec2f(100, 100), 0.2);
+    std::vector<particle> particicles = symulation.getParticles();
 
-    for(int tick = 0; tick < 4; tick++)
+    for(int tick = 0; tick < 400; tick++)
     {
         std::cout << "tick " << tick << std::endl;
         for(auto i : symulation.getParticles())
             std::cout << i.getPosition() << std::endl;
         std::cout << std::endl;
 		
-		display.drawParticles(symulation.getParticles());
-
+        particicles = symulation.getParticles();
 		std::future<void> task = std::async(std::launch::async, [&symulation]() {
             symulation.moveParticles(0.1);
         });
-        while (task.wait_for(std::chrono::milliseconds(100)) != std::future_status::ready)
+        while (task.wait_for(std::chrono::milliseconds(20)) != std::future_status::ready)
+        {
             display.pollEvents();
+            display.drawParticles(particicles);
+        }
 
     }
 }
