@@ -8,10 +8,10 @@
 
 class displ
 {
-	 mutable sf::RenderWindow window;
-	 mutable sf::View view;
+	mutable sf::RenderWindow window;
+	mutable sf::View view;
 	 
-	 float radius;
+	float radius;
 	 
 	// vec2f box;
 	
@@ -23,8 +23,7 @@ class displ
 	void setCenter(float x, float y);
 	
 	void drawParticles(const std::vector<particle>& p)const;
-	
-
+	void pollEvents() const;
 };
 
 #endif
