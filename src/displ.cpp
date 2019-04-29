@@ -31,7 +31,7 @@ void displ::drawParticles(const std::vector<particle>& p)const
 		circle.setFillColor(sf::Color::Green);
 		circle.setOutlineThickness(0.01);
 		circle.setOutlineColor(sf::Color::White);
-		circle.setPosition(i.getPosition().getX(), i.getPosition().getY());
+		circle.setPosition(i.getPosition().getX() - radius, i.getPosition().getY() - radius);
 		
 		window.draw(circle);
 	}
