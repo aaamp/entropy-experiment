@@ -16,7 +16,7 @@ int main()
     display.setCenter(100,50);
 
 
-    symul symulation = symul(10000, 0.2, vec2f(200, 100), vec2f(100, 100), 0.3);
+    symul symulation = symul(5000, 0.2, vec2f(200, 100), vec2f(100, 100), 0.3);
     std::vector<particle> particicles = symulation.getParticles();
 
     auto lastTime = std::chrono::high_resolution_clock::now();
@@ -37,7 +37,7 @@ int main()
         // Przy N rzędu 10000 to się już staje niezbędne
 
         particicles = symulation.getParticles();
-		std::future<void> task = std::async(std::launch::async, [&symulation]() {
+        std::future<void> task = std::async(std::launch::async, [&symulation]() {
             symulation.moveParticles(1);
         });
         

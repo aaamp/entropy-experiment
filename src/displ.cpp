@@ -29,12 +29,15 @@ void displ::drawParticles(const std::vector<particle>& p)const
 	sf::CircleShape circle(radius, 20);
 	circle.setRadius(radius);
 	circle.setFillColor(sf::Color::Green);
-	circle.setOutlineThickness(0.01);
-	circle.setOutlineColor(sf::Color::White);
-	
+	circle.setOutlineThickness(0);
+	int temperature;
 	for(const auto& i : p)
 	{
+		// Uwaga! 0.25 było wyznaczone eksperymentalnie!
+		temperature = i.getVelocity().getSquaredLength() * 255.f / 0.25f;
+		temperature = temperature < 255 ? temperature : 255;
 		circle.setPosition(i.getPosition().getX() - radius, i.getPosition().getY() - radius);
+		circle.setFillColor(sf::Color(temperature, 0, 255 - temperature));
 		window.draw(circle);
 	}
 	
