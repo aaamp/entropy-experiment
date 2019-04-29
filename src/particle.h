@@ -15,6 +15,7 @@ public:
     const vec2f& getVelocity() const { return velocity; }
     void update(float timeTick) { position += velocity*timeTick; }
     void collideWith(particle& other);
+    void collideBox(const vec2f& box, const float& r);
 private:
     vec2f position, velocity;
 };
