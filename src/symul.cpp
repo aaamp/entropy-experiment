@@ -4,6 +4,7 @@
 #include <thread>
 #include <random>
 #include <algorithm>
+#include <ctime>
 
 const std::vector<particle>& symul::moveParticles()
 {
