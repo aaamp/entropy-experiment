@@ -3,9 +3,15 @@
 #include <iostream>
 #include "particle.h"
 #include "symul.h"
+#include "displ.hpp"
 
 int main()
 {
+	displ display(0.1);
+	display.createWindow("Symulacja",800,600);
+	display.zoom(0.01);
+	display.setCenter(2,2);
+
     particle x({1,1},{2,2});
     x.update(1);
     std::cout << x.getPosition() << std::endl;
@@ -23,7 +29,9 @@ int main()
         for(auto i : symulation.getParticles())
             std::cout << i.getPosition() << std::endl;
         std::cout << std::endl;
-
+		
+		display.drawParticles(symulation.getParticles());
+		
         symulation.moveParticles(1);
     }
 }
