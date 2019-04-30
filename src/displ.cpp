@@ -1,9 +1,9 @@
 #include "displ.hpp"
-
-void displ::createWindow(std::string str, unsigned x, unsigned y)
+void displ::createWindow(std::string str, unsigned x, unsigned y, unsigned antialiasing)
 {
 	sf::ContextSettings settings;
-	settings.antialiasingLevel = 4;
+	//Z antyaliasingiem 0 działa bardzo szybko ale brzydko
+	settings.antialiasingLevel = antialiasing;
 	window.create(sf::VideoMode(x,y), str,sf::Style::Default, settings);	
 	
 	view.reset(sf::FloatRect( 0, 0, x, y));
@@ -26,21 +26,52 @@ void displ::drawParticles(const std::vector<particle>& p)const
 	
 	window.draw(rectangle);*/
 
-	sf::CircleShape circle(radius, 20);
-	circle.setRadius(radius);
-	circle.setFillColor(sf::Color::Green);
-	circle.setOutlineThickness(0);
-	int temperature;
-	for(const auto& i : p)
+	float doubledZoom = view.getSize().x/(float)window.getSize().x + view.getSize().y/(float)window.getSize().y;
+
+	if (radius/doubledZoom*1.5f > 1.f)
 	{
-		// Uwaga! 0.25 było wyznaczone eksperymentalnie!
-		temperature = i.getVelocity().getSquaredLength() * 255.f / 0.25f;
-		temperature = temperature < 255 ? temperature : 255;
-		circle.setPosition(i.getPosition().getX() - radius, i.getPosition().getY() - radius);
-		circle.setFillColor(sf::Color(temperature, 0, 255 - temperature));
-		window.draw(circle);
+		//Kółka są widoczne
+
+		sf::CircleShape circle(radius);
+
+		//Dokładność kształtów rośnie z powiększaniem
+		float vertices = 0.4f/doubledZoom + 3.f;
+		vertices = vertices < 20.f ? vertices : 20.f;
+		circle.setPointCount((int)vertices);
+
+		circle.setRadius(radius);
+		int temperature;
+		sf::FloatRect viewBoundingBox(view.getCenter() - view.getSize()/2.f, view.getSize());
+		for(const auto& i : p)
+		{
+			circle.setPosition(i.getPosition().getX() - radius, i.getPosition().getY() - radius);
+
+			//Poza ekranem nie rysujemy
+			if (!viewBoundingBox.intersects(circle.getGlobalBounds()))
+				continue;
+
+			// Uwaga! 0.25 było wyznaczone eksperymentalnie!
+			temperature = i.getVelocity().getSquaredLength() * 1020; // * 255.f / 0.25f;
+			temperature = temperature < 255 ? temperature : 255;
+			circle.setFillColor(sf::Color(temperature, 0, 255 - temperature));
+			window.draw(circle);
+		}
 	}
-	
+	else
+	{
+		//Kółka sprowadzają się do punktów
+		sf::Vertex point;
+		int temperature;
+		for(const auto& i : p)
+		{
+			// Uwaga! 0.25 było wyznaczone eksperymentalnie!
+			temperature = i.getVelocity().getSquaredLength() * 255.f / 0.25f;
+			temperature = temperature < 255 ? temperature : 255;
+			point.position = {i.getPosition().getX() - radius, i.getPosition().getY() - radius};
+			point.color = sf::Color(temperature, 0, 255 - temperature);
+			window.draw(&point, 1, sf::Points);
+		}
+	}
 	window.display();
 }
 
@@ -69,7 +100,7 @@ void displ::pollEvents() const
             view = window.getView();
             if (event.mouseWheelScroll.delta < 0.f && view.getSize().x/(float)window.getSize().x + view.getSize().y/(float)window.getSize().y < 0.01f)
                 break;
-            if (event.mouseWheelScroll.delta > 0.f && view.getSize().x/(float)window.getSize().x + view.getSize().y/(float)window.getSize().y > 1.f)
+            if (event.mouseWheelScroll.delta > 0.f && view.getSize().x/(float)window.getSize().x + view.getSize().y/(float)window.getSize().y > 2.f)
                 break;
             view.zoom((event.mouseWheelScroll.delta > 0.f) * 1.2f + (event.mouseWheelScroll.delta < 0) * 0.8f);
             window.setView(view);

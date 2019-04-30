@@ -16,7 +16,7 @@ int main()
     display.setCenter(100,50);
 
 
-    symul symulation = symul(5000, 0.2, vec2f(200, 100), vec2f(100, 100), 0.3);
+    symul symulation = symul(50000, 0.2, vec2f(200, 100), vec2f(100, 100), 0.3);
     std::vector<particle> particicles = symulation.getParticles();
 
     auto lastTime = std::chrono::high_resolution_clock::now();
@@ -34,7 +34,8 @@ int main()
             std::this_thread::sleep_until(lastTime + std::chrono::milliseconds(100));
         lastTime = std::chrono::high_resolution_clock::now();*/
 
-        // Przy N rzędu 10000 to się już staje niezbędne
+        // To czy szybsza jest fizyka czy grafika zależy aktualnie od powiększenia obrazu,
+        // fizyka nie powoduje lagów.
 
         particicles = symulation.getParticles();
         std::future<void> task = std::async(std::launch::async, [&symulation]() {

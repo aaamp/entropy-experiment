@@ -17,7 +17,7 @@ class displ
 	
 	public:
 	explicit displ(float r /*vec2f b*/) : radius(r)/*, box(b) */{}; //particle rad., bounding box
-	void createWindow(std::string, unsigned x, unsigned y);
+	void createWindow(std::string, unsigned x, unsigned y, unsigned antialiasing = 2);
 	
 	void zoom(float f);
 	void setCenter(float x, float y);
