@@ -5,6 +5,7 @@
 #include <thread>
 #include <chrono>
 #include <future>
+#include <random>
 #include "vec2.h"
 #include "particle.h"
 
@@ -22,6 +23,9 @@ public:
 
 private:
     std::vector<particle> particles;
+
+    std::mt19937 mt_rand;
+    std::vector<std::pair<vec2f, int>> sortedPositions;
     vec2f box;
     float particleR;
     float timeTick;

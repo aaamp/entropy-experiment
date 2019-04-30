@@ -11,6 +11,7 @@ public:
     using floatingType = T;
     vec2(floatingType X, floatingType Y)
         : x(X), y(Y) {}
+    vec2() {} // std::pair goes crazy if class does not have default constructor
     const floatingType& getX() const { return x; }
     const floatingType& getY() const { return y; }
     void setX(const floatingType& v) { x = v; }
