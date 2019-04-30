@@ -17,14 +17,12 @@ void displ::drawParticles(const std::vector<particle>& p)const
 {
 	window.clear(sf::Color::Black);
 
-/*	sf::RectangleShape rectangle;
-	
+	sf::RectangleShape rectangle;
 	rectangle.setSize(sf::Vector2f(box.getX(), box.getY()));
-	rectangle.setOutlineColor(sf::Color(0x808080));
+	rectangle.setOutlineColor(sf::Color::White);
 	rectangle.setFillColor(sf::Color::Transparent);
-	rectangle.setOutlineThickness(1);
-	
-	window.draw(rectangle);*/
+	rectangle.setOutlineThickness(2.f);
+	window.draw(rectangle);
 
 	float doubledZoom = view.getSize().x/(float)window.getSize().x + view.getSize().y/(float)window.getSize().y;
 
@@ -51,7 +49,7 @@ void displ::drawParticles(const std::vector<particle>& p)const
 				continue;
 
 			// Uwaga! 0.25 było wyznaczone eksperymentalnie!
-			temperature = i.getVelocity().getSquaredLength() * 1020; // * 255.f / 0.25f;
+			temperature = i.getVelocity().getSquaredLength() * 1020.f; // * 255.f / 0.25f;
 			temperature = temperature < 255 ? temperature : 255;
 			circle.setFillColor(sf::Color(temperature, 0, 255 - temperature));
 			window.draw(circle);
@@ -65,7 +63,7 @@ void displ::drawParticles(const std::vector<particle>& p)const
 		for(const auto& i : p)
 		{
 			// Uwaga! 0.25 było wyznaczone eksperymentalnie!
-			temperature = i.getVelocity().getSquaredLength() * 255.f / 0.25f;
+			temperature = i.getVelocity().getSquaredLength() * 1020.f; // * 255.f / 0.25f;
 			temperature = temperature < 255 ? temperature : 255;
 			point.position = {i.getPosition().getX() - radius, i.getPosition().getY() - radius};
 			point.color = sf::Color(temperature, 0, 255 - temperature);
