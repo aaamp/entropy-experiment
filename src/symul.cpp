@@ -7,7 +7,6 @@
 #include <ctime>
 #include <cmath>
 
-using namespace std;
 const std::vector<particle>& symul::moveParticles()
 {
     using posind = std::vector<std::pair<vec2f, int>>; 
@@ -78,7 +77,7 @@ const std::vector<particle>& symul::moveParticles()
     }
 
     // shuffle collisions
-    random_shuffle(collisions.begin(), collisions.end(), [&](int n){return mt_rand() % n;});
+    std::shuffle(collisions.begin(), collisions.end(), mt_rand);
 
     // apply collisions
     for(auto& i : collisions)
