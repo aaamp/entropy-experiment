@@ -16,7 +16,7 @@ int main()
     display.setCenter(100,50);
 
 
-    symul symulation = symul(50000, 0.2, vec2f(200, 100), vec2f(100, 100), 0.3, 0.2);
+    symul symulation = symul(50000, 0.2, vec2f(200, 100), vec2f(100, 100), 0.3, 0.1);
     std::vector<particle> particicles = symulation.getParticles();
 
     auto lastTime = std::chrono::high_resolution_clock::now();

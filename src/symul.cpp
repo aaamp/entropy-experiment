@@ -5,49 +5,94 @@
 #include <random>
 #include <algorithm>
 #include <ctime>
+#include <cmath>
 
+using namespace std;
 const std::vector<particle>& symul::moveParticles()
 {
-    //update sorted positions
+    using posind = std::vector<std::pair<vec2f, int>>; 
+
+    // number of threads = number of buckets
+    // todo experiment with this
+    // should depend on number of particles and box size somehow
+    const int thrn = 15;
+
+    // update sorted positions
     for(auto& i : sortedPositions)
         i.first = particles[i.second].getPosition();
 
-    sort(sortedPositions.begin(), sortedPositions.end(), [](auto x, auto y)
+    // fix changes in order
+    std::sort(sortedPositions.begin(), sortedPositions.end(), [](auto x, auto y)
     { 
         return x.first.getX() < y.first.getX();
     });
 
-    long long checkCount = 0;
-
-    std::vector<std::pair<int, int>> collisions;
-    auto startj = sortedPositions.begin();
-    for(auto i = sortedPositions.begin(); i < sortedPositions.end(); i++)
+    // put positions in thrn buckets by their Y
+    float buckLen = box.getY() / thrn;
+    std::vector<posind> splited(thrn);
+    for(auto& i : sortedPositions)
     {
-        while(startj <= i && startj->first.getX() < i->first.getX() - particleR * 2)
-            startj++;
-        for(auto j = startj; j < i; j++)
-        {
-            checkCount++;
-            if((j->first - i->first).getLength() < 2 * particleR)
-                collisions.push_back(std::make_pair(i->second, j->second));
-        }
+        int mybucket = static_cast<int>(std::floor(i.first.getY() / buckLen));
+        if(mybucket < 0)
+            mybucket = 0;
+        if(mybucket >= thrn)
+            mybucket = thrn;
+        splited[mybucket].push_back(i);
+        if(mybucket > 0 && i.first.getY() - (buckLen * mybucket) < 2 * particleR)
+            splited[mybucket - 1].push_back(i);
+        if(mybucket < thrn - 1 && (mybucket + 1) * buckLen - i.first.getY() < 2 * particleR)
+            splited[mybucket + 1].push_back(i);
     }
 
-    int collCount = collisions.size(); 
+    // function that returns collisions from one bucket
+    auto getCollisions = [&](int b)
+    {
+        std::vector<std::pair<int, int>> myCollisions;
+        auto startj = splited[b].begin();
+        for(auto i = splited[b].begin(); i < splited[b].end(); i++)
+        {
+            while(startj < i && startj->first.getX() < i->first.getX() - particleR * 2)
+                startj++;
+            for(auto j = startj; j < i; j++)
+            {
+                if((j->first - i->first).getLength() < 2 * particleR)
+                    myCollisions.push_back(std::make_pair(i->second, j->second));
+            }
+        }
+        return myCollisions;
+    };
 
+    // get collisions
+    std::vector<std::future<std::vector<std::pair<int, int>>>> futures(thrn);
+    for(int i = 0; i < thrn; i++)
+    {
+        futures[i] = std::async(std::launch::async, getCollisions, i);
+    }
+
+    // get collisions in one vector
+    std::vector<std::pair<int, int>> collisions;
+    for(int i = 0; i < thrn; i++)
+    {
+        auto bcoll = futures[i].get();
+        collisions.insert(collisions.end(), bcoll.begin(), bcoll.end());
+    }
+
+    // shuffle collisions
     random_shuffle(collisions.begin(), collisions.end(), [&](int n){return mt_rand() % n;});
 
+    // apply collisions
     for(auto& i : collisions)
         particles[i.first].collideWith(particles[i.second]);
-
+    
+    // collide with box
     for(auto& i : particles)
         i.collideBox(box, particleR);
 
+    // update position
     for(auto& p : particles)
         p.update(timeTick);
 
-    std::cerr << "collisions: " << collCount << std::endl;
-    std::cerr << "checks: " << checkCount << std::endl;
+    std::cerr << "collisions: " << collisions.size() << std::endl;
 
     return particles;
 }
