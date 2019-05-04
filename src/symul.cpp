@@ -16,37 +16,36 @@ const std::vector<particle>& symul::moveParticles()
     // should depend on number of particles and box size somehow
     const int thrn = 15;
 
-    // update sorted positions
-    for(auto& i : sortedPositions)
-        i.first = particles[i.second].getPosition();
-
-    // fix changes in order
-    std::sort(sortedPositions.begin(), sortedPositions.end(), [](auto x, auto y)
-    { 
-        return x.first.getX() < y.first.getX();
-    });
-
     // put positions in thrn buckets by their Y
     float buckLen = box.getY() / thrn;
     std::vector<posind> splited(thrn);
-    for(auto& i : sortedPositions)
+    for(auto& i : splited)
+        i.reserve(particles.size() * 2 / thrn);
+    for(int i = 0; i < particles.size(); i++)
     {
-        int mybucket = static_cast<int>(std::floor(i.first.getY() / buckLen));
+        int mybucket = static_cast<int>(std::floor(particles[i].getPosition().getY() / buckLen));
         if(mybucket < 0)
             mybucket = 0;
         if(mybucket >= thrn)
             mybucket = thrn;
-        splited[mybucket].push_back(i);
-        if(mybucket > 0 && i.first.getY() - (buckLen * mybucket) < 2 * particleR)
-            splited[mybucket - 1].push_back(i);
-        if(mybucket < thrn - 1 && (mybucket + 1) * buckLen - i.first.getY() < 2 * particleR)
-            splited[mybucket + 1].push_back(i);
+        splited[mybucket].push_back(std::make_pair(particles[i].getPosition(), i));
+        if(mybucket > 0 && particles[i].getPosition().getY() - (buckLen * mybucket) < 2 * particleR)
+            splited[mybucket - 1].push_back(splited[mybucket].back());
+        if(mybucket < thrn - 1 && (mybucket + 1) * buckLen - particles[i].getPosition().getY() < 2 * particleR)
+            splited[mybucket + 1].push_back(splited[mybucket].back());
     }
 
     // function that returns collisions from one bucket
     auto getCollisions = [&](int b)
     {
-        std::vector<std::pair<int, int>> myCollisions;
+        std::vector<std::pair<int, int>> myCollisions;    
+        myCollisions.reserve(particles.size() * 2 / thrn);
+
+        std::sort(splited[b].begin(), splited[b].end(), [](auto x, auto y)
+        { 
+            return x.first.getX() < y.first.getX();
+        });
+
         auto startj = splited[b].begin();
         for(auto i = splited[b].begin(); i < splited[b].end(); i++)
         {
@@ -98,7 +97,7 @@ const std::vector<particle>& symul::moveParticles()
 
 
 symul::symul(const int& n, const float& r, const vec2f& boxS, const vec2f& iniBox, float maxspeed, float time)
-    : particleR(r), box(boxS), particles(n), timeTick(time), sortedPositions(n), mt_rand(std::time(0))
+    : particleR(r), box(boxS), particles(n), timeTick(time), mt_rand(std::time(0))
 {
     auto randFloat = [&](float low, float high)
     {
@@ -107,8 +106,5 @@ symul::symul(const int& n, const float& r, const vec2f& boxS, const vec2f& iniBo
     for(int i = 0; i < n; i++)
         particles[i] = particle(vec2f(randFloat(0 + r, iniBox.getX() - r), randFloat(0 + r, iniBox.getY() - r)),
                                 vec2f(randFloat(-maxspeed, maxspeed), randFloat(-maxspeed, maxspeed)));
-
-    for(int i = 0; i < n; i++)
-        sortedPositions[i] = std::make_pair(particles[i].getPosition(), i);
 }
 
