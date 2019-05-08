@@ -76,9 +76,10 @@ void displ::drawParticles(const std::vector<particle>& p)const
 void displ::pollEvents() const
 {
 	static bool mouseButtonDown = false;
+	static bool paused = false;
 	static int mouseX = 0, mouseY = 0;
 	static sf::Event event;
-    while (window.pollEvent(event))
+    while (window.pollEvent(event) || paused)
     {
         if (event.type == sf::Event::Closed)
             window.close();
@@ -95,13 +96,15 @@ void displ::pollEvents() const
 		}
         if (event.type == sf::Event::MouseWheelScrolled)
         {
-            view = window.getView();
-            if (event.mouseWheelScroll.delta < 0.f && view.getSize().x/(float)window.getSize().x + view.getSize().y/(float)window.getSize().y < 0.01f)
-                break;
-            if (event.mouseWheelScroll.delta > 0.f && view.getSize().x/(float)window.getSize().x + view.getSize().y/(float)window.getSize().y > 2.f)
-                break;
-            view.zoom((event.mouseWheelScroll.delta > 0.f) * 1.2f + (event.mouseWheelScroll.delta < 0) * 0.8f);
-            window.setView(view);
+            [&,this](){
+				view = window.getView();
+				if (event.mouseWheelScroll.delta < 0.f && view.getSize().x/(float)window.getSize().x + view.getSize().y/(float)window.getSize().y < 0.01f)
+					return;
+				if (event.mouseWheelScroll.delta > 0.f && view.getSize().x/(float)window.getSize().x + view.getSize().y/(float)window.getSize().y > 2.f)
+					return;
+				view.zoom((event.mouseWheelScroll.delta > 0.f) * 1.2f + (event.mouseWheelScroll.delta < 0) * 0.8f);
+				window.setView(view); 
+			}();
         }
         if (event.type == sf::Event::KeyPressed)
         {
@@ -121,6 +124,8 @@ void displ::pollEvents() const
                 case sf::Keyboard::D:
                     view.move(view.getSize().x/(float)window.getSize().x * step, 0.f);
                     break;
+				case sf::Keyboard::P:
+					paused = !paused;
                 default:
                     break;
             }
