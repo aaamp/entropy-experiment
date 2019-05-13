@@ -31,8 +31,8 @@ const std::vector<particle>& symul::moveParticles()
         splited[mybucket].push_back(std::make_pair(particles[i].getPosition(), i));
         if(mybucket > 0 && particles[i].getPosition().getY() - (buckLen * mybucket) < 2 * particleR)
             splited[mybucket - 1].push_back(splited[mybucket].back());
-        if(mybucket < thrn - 1 && (mybucket + 1) * buckLen - particles[i].getPosition().getY() < 2 * particleR)
-            splited[mybucket + 1].push_back(splited[mybucket].back());
+        //if(mybucket < thrn - 1 && (mybucket + 1) * buckLen - particles[i].getPosition().getY() < 2 * particleR)
+            //splited[mybucket + 1].push_back(splited[mybucket].back());
     }
 
     // function that returns collisions from one bucket
