@@ -62,13 +62,12 @@ const void entropy::LoadParticles(vector<particle>p)
 {
     particles = p;
 }
-const double& entropy::calcProbability()
+double entropy::calcProbability()
 {
-    double res = pow(exp(1), calcEntropy());
-    return res;
+    return pow(exp(1), calcEntropy());
 }
 
-const double & entropy::calcEntropy()
+double entropy::calcEntropy()
 {
     int n = particles.size();
     int ns = 0;

@@ -16,8 +16,8 @@ public:
     const void ClearBoxes();
     const void LoadParticles(vector<particle>p);
     const void GroupParticles();
-    const double& calcProbability();
-    const double& calcEntropy();
+    double calcProbability();
+    double calcEntropy();
     const vector<vector< vector<vector<int>>>>& GetBoxes();
 private:
     vector<particle> particles;
