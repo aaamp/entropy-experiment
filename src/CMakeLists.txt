@@ -1,5 +1,5 @@
 ﻿set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/Release)
-add_executable(entropy_experiment main.cpp symul.cpp particle.cpp displ.cpp)
+add_executable(entropy_experiment main.cpp symul.cpp particle.cpp displ.cpp entropy.cpp)
 
 #SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread")
 # Threads::Threads powinno dać radę 
