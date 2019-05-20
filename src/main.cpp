@@ -18,7 +18,7 @@ int main()
     symul symulation = symul(50000, 0.2, vec2f(200, 100), vec2f(100, 100), 0.3, 0.1);
     std::vector<particle> particicles = symulation.getParticles();
 
- entropy ent = entropy(0.00002 , 0.00001 ,10000 ,10000, 0.2, 0.1);
+	entropy ent(2, 2, 5, 4, 5, 4);
 
     auto lastTime = std::chrono::high_resolution_clock::now();
     for(int tick = 0; tick < 100000; tick++)
