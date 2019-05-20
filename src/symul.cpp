@@ -90,7 +90,7 @@ const std::vector<particle>& symul::moveParticles()
     for(auto& p : particles)
         p.update(timeTick);
 
-    std::cerr << "collisions: " << collisions.size() << std::endl;
+    //std::cerr << "collisions: " << collisions.size() << std::endl;
 
     return particles;
 }
