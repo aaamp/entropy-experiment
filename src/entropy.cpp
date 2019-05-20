@@ -46,7 +46,7 @@ const void entropy::ClearBoxes()
 {
     for (int i = 0; i < position_box_count; i++)
     {
-        for (int j = 0; j < position_box_count; i++)
+        for (int j = 0; j < position_box_count; j++)
         {
             for (int k = 0; k < velocity_box_count; k++)
             {
