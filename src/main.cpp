@@ -14,11 +14,11 @@ int main()
     display.createWindow("Symulacja", 1000, 500);
     display.zoom(0.2);
     display.setCenter(100,50);
-	
+ 
     symul symulation = symul(50000, 0.2, vec2f(200, 100), vec2f(100, 100), 0.3, 0.1);
     std::vector<particle> particicles = symulation.getParticles();
 
-	entropy ent = entropy(0.00002 , 0.00001 ,10000 ,10000, 0.2, 0.1);
+ entropy ent = entropy(0.00002 , 0.00001 ,10000 ,10000, 0.2, 0.1);
 
     auto lastTime = std::chrono::high_resolution_clock::now();
     for(int tick = 0; tick < 100000; tick++)
@@ -29,9 +29,9 @@ int main()
        for(auto i : symulation.getParticles())
            std::cout << i.getPosition() << std::endl;
        std::cout << std::endl;
-       */
+       */ 
 
-        /*if(tick > 0)		
+        /*if(tick > 0)  
             std::this_thread::sleep_until(lastTime + std::chrono::milliseconds(100));
         lastTime = std::chrono::high_resolution_clock::now();*/
 
@@ -39,12 +39,12 @@ int main()
         // fizyka nie powoduje lagów.
 
         particicles = symulation.getParticles();
-		ent.LoadParticles(particicles);
-		ent.GroupParticles();
-		double entropy = ent.calcEntropy();
-		double probability = pow(exp(1), entropy); //nie wiem, czy jest Wam to do szczęścia potrzebne, feel free to comment
-		vector<vector< vector<vector<int>>>>a = ent.GetBoxes();
-		ent.ClearBoxes();
+  ent.LoadParticles(particicles);
+  ent.GroupParticles();
+  double entropy = ent.calcEntropy();
+  double probability = pow(exp(1), entropy); //nie wiem, czy jest Wam to do szczęścia potrzebne, feel free to comment
+  vector<vector< vector<vector<int>>>>a = ent.GetBoxes();
+  ent.ClearBoxes();
 
         std::future<void> task = std::async(std::launch::async, [&symulation]() {
             symulation.moveParticles();
