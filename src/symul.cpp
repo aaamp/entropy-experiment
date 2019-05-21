@@ -96,7 +96,7 @@ const std::vector<particle>& symul::moveParticles()
 }
 
 
-symul::symul(const int& n, const float& r, const vec2f& boxS, const vec2f& iniBox, float maxspeed, float time)
+symul::symul(const int& n, const float& r, const vec2f& boxS, const vec2f& iniBox, float speed, float time)
     : particleR(r), box(boxS), particles(n), timeTick(time), mt_rand(std::time(0))
 {
     auto randFloat = [&](float low, float high)
@@ -105,6 +105,6 @@ symul::symul(const int& n, const float& r, const vec2f& boxS, const vec2f& iniBo
     };
     for(int i = 0; i < n; i++)
         particles[i] = particle(vec2f(randFloat(0 + r, iniBox.getX() - r), randFloat(0 + r, iniBox.getY() - r)),
-                                vec2f(randFloat(-maxspeed, maxspeed), randFloat(-maxspeed, maxspeed)));
+                                vec2f(randFloat(-speed, speed), randFloat(-speed, speed)));
 }
 
