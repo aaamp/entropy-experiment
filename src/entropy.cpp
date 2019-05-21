@@ -8,7 +8,8 @@
 #include "entropy.h"
 
 using namespace std;
-entropy::entropy(float p_grid, float v_grid, int p_count, int v_count, float r, float v)
+entropy::entropy(float p_grid, float v_grid, int p_count, int v_count, float r, float v) :
+    boxes(p_count, vector<vector<vector<int>>>(p_count, vector<vector<int>>(v_count, vector<int>(v_count))))
 {
     position_box_size = p_grid;
     velocity_box_size = v_grid;
@@ -16,8 +17,6 @@ entropy::entropy(float p_grid, float v_grid, int p_count, int v_count, float r, 
     velocity_box_count = v_count;
     position_limit = r;
     velocity_limit = v;
-    vector<vector< vector<vector<int>>>>a(p_count, vector<vector<vector<int>>>(p_count, vector<vector<int>>(v_count, vector<int>(v_count))));
-    boxes = a;
 }
 
 const void entropy::GroupParticles()

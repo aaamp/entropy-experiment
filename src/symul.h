@@ -13,7 +13,7 @@
 class symul
 {
 public:
-    symul(const int& n, const float& r, const vec2f& boxSize, const vec2f& initialBox, float maxspeed, float time = 1);
+    symul(const int& n, const float& r, const vec2f& boxSize, const vec2f& initialBox, float maxspeed, float time = 0.1);
 
     const std::vector<particle>& getParticles() const { return particles; }
     const vec2f& getBox() const { return box; }
