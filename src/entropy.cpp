@@ -35,8 +35,8 @@ const void entropy::GroupParticles()
 
 		int ipx = px / position_box_size;
 		int ipy = py / position_box_size;
-		int ivx = px / position_box_size;
-		int ivy = py / position_box_size;
+		int ivx = vx / velocity_box_size;
+		int ivy = vy / velocity_box_size;
 		boxes[max(min(ipx, pmax), 0)][max(min(ipy, pmax), 0)][max(min(ivx, vmax), 0)][max(min(ivy, vmax), 0)]++;
 	}
 }
