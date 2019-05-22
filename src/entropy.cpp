@@ -21,24 +21,24 @@ entropy::entropy(float p_grid, float v_grid, int p_count, int v_count, float r, 
 
 const void entropy::GroupParticles()
 {
-    int pmax = position_box_count - 1;
-    int vmax = velocity_box_count - 1;
-    for (int i = 0; i < particles.size(); i++)
-    {
-        vec2f position = particles[i].getPosition();
-        float px = position.getX() + position_limit;
-        float py = position.getY() + position_limit;
+	int pmax = position_box_count - 1;
+	int vmax = velocity_box_count - 1;
+	for (int i = 0; i < particles.size(); i++)
+	{
+		vec2f position = particles[i].getPosition();
+		float px = position.getX();
+		float py = position.getY();
 
-        vec2f velocity = particles[i].getVelocity();
-        float vx = velocity.getX() + velocity_limit;
-        float vy = velocity.getY() + velocity_limit;
+		vec2f velocity = particles[i].getVelocity();
+		float vx = velocity.getX() + velocity_limit;
+		float vy = velocity.getY() + velocity_limit;
 
-        int ipx = px / position_box_size;
-        int ipy = py / position_box_size;
-        int ivx = px / position_box_size;
-        int ivy = py / position_box_size;
-        boxes[min(ipx, pmax)][min(ipy, pmax)][min(ivx, vmax)][min(ivy, vmax)]++;
-    }
+		int ipx = px / position_box_size;
+		int ipy = py / position_box_size;
+		int ivx = px / position_box_size;
+		int ivy = py / position_box_size;
+		boxes[min(ipx, pmax)][min(ipy, pmax)][max(min(ivx, vmax), 0)][max(min(ivy, vmax), 0)]++;
+	}
 }
 
 const void entropy::ClearBoxes()
