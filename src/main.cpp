@@ -39,7 +39,7 @@ int main()
     symul symulation = symul(PAR_N, RAD, BOX_XY, BOX_S, SPEED);
     std::vector<particle> particles = symulation.getParticles();
 
-    entropy ent(2, 2, 5, 4, 5, 4);
+    entropy ent(2, 2, 5, 4, 5, 4, particles.size());
 
     auto lastTime = std::chrono::high_resolution_clock::now();
     for(int tick = 0; tick < 100000; tick++)
@@ -61,8 +61,8 @@ int main()
 
         std::future<double> entropyTask = std::async(std::launch::async, [&ent, &particles]() {
             ent.ClearBoxes();
-            ent.LoadParticles(particles);
-            ent.GroupParticles();
+            //ent.LoadParticles(particles);
+            ent.GroupParticles(&particles);
             return ent.calcEntropy();
             //double probability = pow(exp(1), entropy); //nie wiem, czy jest Wam to do szczęścia potrzebne, feel free to comment
         });

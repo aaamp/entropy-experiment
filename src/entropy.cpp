@@ -8,28 +8,29 @@
 #include "entropy.h"
 
 using namespace std;
-entropy::entropy(float p_grid, float v_grid, int p_count, int v_count, float r, float v) :
-    boxes(p_count, vector<vector<vector<int>>>(p_count, vector<vector<int>>(v_count, vector<int>(v_count))))
+entropy::entropy(float p_grid, float v_grid, int p_count, int v_count, float r, float v, int _n) :
+	boxes(p_count, vector<vector<vector<int>>>(p_count, vector<vector<int>>(v_count, vector<int>(v_count))))
 {
-    position_box_size = p_grid;
-    velocity_box_size = v_grid;
-    position_box_count = p_count;
-    velocity_box_count = v_count;
-    position_limit = r;
-    velocity_limit = v;
+	position_box_size = p_grid;
+	velocity_box_size = v_grid;
+	position_box_count = p_count;
+	velocity_box_count = v_count;
+	position_limit = r;
+	velocity_limit = v;
+	n = _n;
 }
 
-const void entropy::GroupParticles()
+const void entropy::GroupParticles(vector<particle> *particles)
 {
 	int pmax = position_box_count - 1;
 	int vmax = velocity_box_count - 1;
-	for (int i = 0; i < particles.size(); i++)
+	for (int i = 0; i < (*particles).size(); i++)
 	{
-		vec2f position = particles[i].getPosition();
+		vec2f position = (*particles)[i].getPosition();
 		float px = position.getX();
 		float py = position.getY();
 
-		vec2f velocity = particles[i].getVelocity();
+		vec2f velocity = (*particles)[i].getVelocity();
 		float vx = velocity.getX() + velocity_limit;
 		float vy = velocity.getY() + velocity_limit;
 
@@ -43,56 +44,56 @@ const void entropy::GroupParticles()
 
 const void entropy::ClearBoxes()
 {
-    for (int i = 0; i < position_box_count; i++)
-    {
-        for (int j = 0; j < position_box_count; j++)
-        {
-            for (int k = 0; k < velocity_box_count; k++)
-            {
-                for (int l = 0; l < velocity_box_count; l++)
-                {
-                    boxes[i][j][k][l] = 0;
-                }
-            }
-        }
-    }
+	for (int i = 0; i < position_box_count; i++)
+	{
+		for (int j = 0; j < position_box_count; j++)
+		{
+			for (int k = 0; k < velocity_box_count; k++)
+			{
+				for (int l = 0; l < velocity_box_count; l++)
+				{
+					boxes[i][j][k][l] = 0;
+				}
+			}
+		}
+	}
 }
-const void entropy::LoadParticles(vector<particle>p)
-{
-    particles = p;
-}
+//const void entropy::LoadParticles(vector<particle>p)
+//{
+//	particles = p;
+//}
 double entropy::calcProbability()
 {
-    return pow(exp(1), calcEntropy());
+	return pow(exp(1), calcEntropy());
 }
 
 double entropy::calcEntropy()
 {
-    int n = particles.size();
-    int ns = 0;
-    double res = n * log(n);
-    for (int i = 0; i < position_box_count; i++)
-    {
-        for (int j = 0; j < position_box_count; j++)
-        {
-            for (int k = 0; k < velocity_box_count; k++)
-            {
-                for (int l = 0; l < velocity_box_count; l++)
-                {
-                    ns = boxes[i][j][k][l];
-                    if (ns > 0)
-                    {
-                        res -= ns * log(ns);
-                    }
-                }
-            }
-        }
-    }
-    return res;
+	//int n = particles.size();
+	int ns = 0;
+	double res = n * log(n);
+	for (int i = 0; i < position_box_count; i++)
+	{
+		for (int j = 0; j < position_box_count; j++)
+		{
+			for (int k = 0; k < velocity_box_count; k++)
+			{
+				for (int l = 0; l < velocity_box_count; l++)
+				{
+					ns = boxes[i][j][k][l];
+					if (ns > 0)
+					{
+						res -= ns * log(ns);
+					}
+				}
+			}
+		}
+	}
+	return res;
 }
 
 const vector<vector<vector<vector<int>>>>& entropy::GetBoxes()
 {
-    return boxes;
+	return boxes;
 }
 
