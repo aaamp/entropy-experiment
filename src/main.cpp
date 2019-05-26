@@ -7,11 +7,12 @@
 #include <random>
 #include <chrono>
 #include "entropy.h"
+#include "lineChart.hpp"
 
 int main()
 {
     // number of particles
-    const int PAR_N = 50000;
+    const int PAR_N = 1000;
 
     // box size
     // upper left corner of the box is at (0, 0)
@@ -34,10 +35,15 @@ int main()
     displ display(RAD, BOX_XY);
     display.createWindow("Symulacja");
     
+
     symul symulation = symul(PAR_N, RAD, BOX_XY, BOX_S, SPEED);
     std::vector<particle> particles = symulation.getParticles();
 
     entropy ent(BOX_XY.getX() / 20, SPEED / 2, 40, 4, SPEED, particles.size());
+
+    chart chart2D;
+    chart2D.createWindow(800, 410, "Wykres entorpii od czasu");
+
 
     auto lastTime = std::chrono::high_resolution_clock::now();
     for(int tick = 0; tick < 100000; tick++)
@@ -76,6 +82,12 @@ int main()
 
         double e = entropyTask.get();
         std::cout << "Entropy: " << e << std::endl;
+        
+        if (tick == 1)
+            chart2D.chartReDraw(e);
+
+        chart2D.chartUpdate(tick, e);
+        chart2D.pollEvents();
     }
 }
 
