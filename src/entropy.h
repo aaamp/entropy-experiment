@@ -7,9 +7,11 @@
 #include "particle.h"
 
 
-using namespace std;
 class entropy
 {
+    template<class T>
+    using vector = std::vector<T>;
+
 public:
 	entropy(float p_grid, float v_grid, int p_count, int v_count, float r, float v, int n);
 

@@ -75,7 +75,7 @@ int main()
         }
 
         double e = entropyTask.get();
-        std::cout << "Entropy: " << e << endl;
+        std::cout << "Entropy: " << e << std::endl;
     }
 }
 
