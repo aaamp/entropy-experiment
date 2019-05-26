@@ -13,7 +13,7 @@ class entropy
     using vector = std::vector<T>;
 
 public:
-	entropy(float p_grid, float v_grid, int p_count, int v_count, float r, float v, int n);
+	entropy(float p_grid, float v_grid, int p_count, int v_count, float v, int n);
 
 	const void ClearBoxes();
 	//const void LoadParticles(vector<particle>p);
@@ -28,7 +28,6 @@ private:
 	int velocity_box_count;
 	float position_box_size;
 	int position_box_count;
-	float position_limit;
 	float velocity_limit;
 	int n;
 };
