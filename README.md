@@ -23,3 +23,4 @@ cmake .
 cmake --build . --config Release
 ```
 
+#### Zabrania się wykorzystania zamieszczonego tu kodu w jakiejkolwiek formie bez wiedzy i zgody twórców.

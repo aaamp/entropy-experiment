@@ -16,7 +16,7 @@ int main()
     // box size
     // upper left corner of the box is at (0, 0)
     // bottom right at BOX_XY
-    const vec2f BOX_XY(200, 100);
+    const vec2f BOX_XY(200, 200);
 
     // box in which particles start
     // from (0, 0) to BOX_S
@@ -32,10 +32,8 @@ int main()
 
 
     displ display(RAD, BOX_XY);
-    display.createWindow("Symulacja", 1000, 500);
-    display.zoom(0.2);
-    display.setCenter(100,50);
-
+    display.createWindow("Symulacja");
+    
     symul symulation = symul(PAR_N, RAD, BOX_XY, BOX_S, SPEED);
     std::vector<particle> particles = symulation.getParticles();
 
@@ -61,7 +59,6 @@ int main()
 
         std::future<double> entropyTask = std::async(std::launch::async, [&ent, &particles]() {
             ent.ClearBoxes();
-            //ent.LoadParticles(particles);
             ent.GroupParticles(&particles);
             return ent.calcEntropy();
             //double probability = pow(exp(1), entropy); //nie wiem, czy jest Wam to do szczęścia potrzebne, feel free to comment
@@ -78,7 +75,7 @@ int main()
         }
 
         double e = entropyTask.get();
-        cout << "Entropy: " << e << endl;
+        std::cout << "Entropy: " << e << endl;
     }
 }
 

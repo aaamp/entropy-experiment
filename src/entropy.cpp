@@ -20,7 +20,7 @@ entropy::entropy(float p_grid, float v_grid, int p_count, int v_count, float r, 
 	n = _n;
 }
 
-const void entropy::GroupParticles(vector<particle> *particles)
+const void entropy::GroupParticles(const vector<particle> *particles)
 {
 	int pmax = position_box_count - 1;
 	int vmax = velocity_box_count - 1;

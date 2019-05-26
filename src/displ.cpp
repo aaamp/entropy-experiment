@@ -11,6 +11,9 @@ void displ::createWindow(std::string str, unsigned x, unsigned y, unsigned antia
 	
 	window.clear(sf::Color::Black);
 	window.display();
+
+	zoom(0.3f);
+    setCenter(box.getX()/2.f, box.getY()/2.f);
 }
 
 void displ::drawParticles(const std::vector<particle>& p)const
@@ -96,15 +99,13 @@ void displ::pollEvents() const
 		}
         if (event.type == sf::Event::MouseWheelScrolled)
         {
-            [&,this](){
-				view = window.getView();
-				if (event.mouseWheelScroll.delta < 0.f && view.getSize().x/(float)window.getSize().x + view.getSize().y/(float)window.getSize().y < 0.01f)
-					return;
-				if (event.mouseWheelScroll.delta > 0.f && view.getSize().x/(float)window.getSize().x + view.getSize().y/(float)window.getSize().y > 2.f)
-					return;
-				view.zoom((event.mouseWheelScroll.delta > 0.f) * 1.2f + (event.mouseWheelScroll.delta < 0) * 0.8f);
-				window.setView(view); 
-			}();
+			view = window.getView();
+			if (event.mouseWheelScroll.delta < 0.f && view.getSize().x/(float)window.getSize().x + view.getSize().y/(float)window.getSize().y < 0.01f)
+				return;
+			if (event.mouseWheelScroll.delta > 0.f && view.getSize().x/(float)window.getSize().x + view.getSize().y/(float)window.getSize().y > 2.f)
+				return;
+			view.zoom((event.mouseWheelScroll.delta > 0.f) * 1.2f + (event.mouseWheelScroll.delta < 0) * 0.8f);
+			window.setView(view); 
         }
         if (event.type == sf::Event::KeyPressed)
         {
