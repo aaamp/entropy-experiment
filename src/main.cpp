@@ -38,7 +38,8 @@ int main()
     std::vector<particle> particles = symulation.getParticles();
 
     entropy ent(BOX_XY.getX() / 20, SPEED / 2, 40, 4, SPEED, particles.size());
-	std::vector<double>entropy_arr(100000);
+    std::vector<double> entropy_arr;
+
     auto lastTime = std::chrono::high_resolution_clock::now();
     for(int tick = 0; tick < 100000; tick++)
     {
@@ -74,8 +75,9 @@ int main()
             display.pollEvents();
         }
 
-		entropy_arr.push_back(entropyTask.get());
-		std::cout << "Entropy: " << entropy_arr.back() << std::endl;
-	}
+        entropy_arr.push_back(entropyTask.get());
+        std::cout << "Entropy: " << entropy_arr.back() << std::endl;
+
+    }
 }
 
