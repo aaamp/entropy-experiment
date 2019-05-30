@@ -37,7 +37,7 @@ int main()
     symul symulation = symul(PAR_N, RAD, BOX_XY, BOX_S, SPEED);
     std::vector<particle> particles = symulation.getParticles();
 
-    entropy ent(BOX_XY.getX() / 20, SPEED / 2, 40, 4, SPEED, particles.size());
+    entropy ent(BOX_XY.getX() / 20, SPEED / 2, 20, 4, SPEED, particles.size());
     std::vector<double> entropy_arr;
 
     auto lastTime = std::chrono::high_resolution_clock::now();
