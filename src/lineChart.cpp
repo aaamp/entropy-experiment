@@ -1,23 +1,20 @@
 #include "lineChart.hpp"
 #include <string>
 #include <sstream>
-void chart::createWindow( unsigned x, unsigned y,std::string des)
+void chart::createWindow(unsigned x, unsigned y, std::string des)
 {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 3;
 
-    window.create(sf::VideoMode(x, y),des, sf::Style::Default ||sf::Style::Close, settings);
+    window.create(sf::VideoMode(x, y), des, sf::Style::Default || sf::Style::Close, settings);
     view.reset(sf::FloatRect(0, 0, x, y));
     window.setView(view);
 
     window.clear(sf::Color::Black);
     window.display();
+}
 
-    zoom(7);
-    setCenter(380, -190);
-}  
-
-void chart::chartReDraw(double entropy)const
+void chart::chartReDraw()const
 {
     window.clear(sf::Color::Black);
 
@@ -30,16 +27,25 @@ void chart::chartReDraw(double entropy)const
     axis_OY.rotate(270);
     window.draw(axis_OX);
     window.draw(axis_OY);
-	
-   
+
+
     int x = view.getSize().x / 2 + 1;
-    int ax = (view.getCenter().x - x)/100;
+    int y = view.getSize().y / 2 + 1;
+
+
+    int ax = (view.getCenter().x - x) /100;
+    int ay = (-view.getCenter().y - y)/100 ;
+
     if (ax < 0)
         ax = 0;
+    if (ay < 0)
+        ay = 0;
+
+
     for (ax; ax < view.getCenter().x + x; ax += 100)
     {
         sf::RectangleShape line(sf::Vector2f(40, 2));
-        line.setPosition(ax+1, 0);
+        line.setPosition(ax + 1, 0);
         line.rotate(90);
         window.draw(line);
         if (ax % 500 == 0)
@@ -49,29 +55,27 @@ void chart::chartReDraw(double entropy)const
 
     }
 
-    int y = view.getSize().y / 2 + 1;
-
-    ax = (-view.getCenter().y - y) / 100;
-    if (ax < 0)
-        ax = 0;
-    for (ax; ax < -view.getCenter().y + y; ax += 100)
+    for (ay; ay < -view.getCenter().y + y; ay += 100)
     {
         sf::RectangleShape line(sf::Vector2f(40, 2));
-        line.setPosition(-40, -ax);
+        line.setPosition(-40, -ay);
         window.draw(line);
-        if (ax % 500 == 0)
+        if (ay % 500 == 0)
         {
-          // tutaj dodac jednostke 
+            // tutaj dodac jednostke 
         }
 
     }
 
+    ax = (view.getCenter().x - x) ;
+    if (ax < 1)
+        ax = 1;
 
-    for (unsigned int i = 1; i < lastPoint.size(); i++) {
+    for (unsigned int i = ax; i < lastPoint.size(); i++) {
 
         sf::Vertex line[] =
         {
-            sf::Vertex(sf::Vector2f(i - 1, -lastPoint[i-1])),
+            sf::Vertex(sf::Vector2f(i - 1, -lastPoint[i - 1])),
             sf::Vertex(sf::Vector2f(i, -lastPoint[i]))
         };
 
@@ -83,7 +87,10 @@ void chart::chartReDraw(double entropy)const
 void chart::chartUpdate(double time, double entropy)
 {
     lastPoint.push_back(entropy);
+    chartReDraw();
+    return;
 
+    /*
     if (lastPoint.size() == 1)
         return;
 
@@ -94,9 +101,9 @@ void chart::chartUpdate(double time, double entropy)
     };
 
     window.draw(line, 2, sf::Lines);
-    window.display();
+    window.display();  */
 
-}  
+}
 
 void chart::pollEvents() const
 {
@@ -124,9 +131,9 @@ void chart::pollEvents() const
                 view.zoom((event.mouseWheelScroll.delta > 0.f) * 1.2f + (event.mouseWheelScroll.delta < 0) * 0.8f);
                 window.setView(view);
 
-            }();	
+            }();
 
-            chartReDraw(view.getCenter().y);
+            chartReDraw();
         }
         if (event.type == sf::Event::KeyPressed)
         {
@@ -134,15 +141,20 @@ void chart::pollEvents() const
             switch (event.key.code)
             {
             case sf::Keyboard::F:
-                view.setCenter(380*initZoom,-lastPoint[0]);
+                view.setCenter(0, -lastPoint[0]);
+                break;
+            case sf::Keyboard::C:
+                if(lastPoint.size()>0)
+                view.setCenter(lastPoint.size()-1, -lastPoint[lastPoint.size()-1]);
                 break;
             case sf::Keyboard::P:
                 paused = !paused;
+                break;
             default:
                 break;
-        }
+            }
             window.setView(view);
-            chartReDraw(-view.getCenter().y);
+            chartReDraw();
         }
 
         if (event.type == sf::Event::MouseButtonPressed)
@@ -155,7 +167,7 @@ void chart::pollEvents() const
             mouseButtonDown = false;
         if (event.type == sf::Event::MouseMoved && mouseButtonDown)
         {
-            
+
             if (mouseX || mouseY)
             {
                 view = window.getView();
@@ -164,16 +176,18 @@ void chart::pollEvents() const
             }
             mouseX = event.mouseMove.x;
             mouseY = event.mouseMove.y;
-            chartReDraw(-view.getCenter().y);
+            chartReDraw();
         }
     }
 }
 
-void chart::zoom(float f)
+void chart::zoom(double f)
 {
-    initZoom = f;
-    view.zoom(f);
+    initZoom = (f/200 < 8)? f/200:8;
+    view.zoom(initZoom);
+    view.setCenter(380*initZoom, -f+50);
     window.setView(view);
+    
 }
 
 void chart::setCenter(float x, float y)

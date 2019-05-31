@@ -15,10 +15,10 @@ class chart {
     public:
 		void createWindow(unsigned x, unsigned y,std::string des);
 		void chartUpdate(double,double);
-		void zoom(float);
+		void zoom(double);
 		void setCenter(float, float);
 		void pollEvents() const;
-		void chartReDraw(double) const;
+		void chartReDraw() const;
 
 };
 
