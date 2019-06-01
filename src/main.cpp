@@ -45,6 +45,7 @@ int main()
     chart2D.createWindow(800, 400, "Wykres entropii od czasu");
     chart2D.chartReDraw();
 
+    std::vector<double> entropy_arr;
 
     auto lastTime = std::chrono::high_resolution_clock::now();
     for(int tick = 0; tick < 100000; tick++)
@@ -83,6 +84,8 @@ int main()
 
         double e = entropyTask.get();
         std::cout << "Entropy: " << e << std::endl;
+
+        entropy_arr.push_back(e);
         
         if (tick == 1) {
             chart2D.zoom(e);

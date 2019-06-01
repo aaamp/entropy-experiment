@@ -24,7 +24,7 @@ void displ::drawParticles(const std::vector<particle>& p)const
 	rectangle.setSize(sf::Vector2f(box.getX(), box.getY()));
 	rectangle.setOutlineColor(sf::Color::White);
 	rectangle.setFillColor(sf::Color::Transparent);
-	rectangle.setOutlineThickness(2.f);
+	rectangle.setOutlineThickness(box.getX() / 100.f);
 	window.draw(rectangle);
 
 	float doubledZoom = view.getSize().x/(float)window.getSize().x + view.getSize().y/(float)window.getSize().y;
