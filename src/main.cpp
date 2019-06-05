@@ -17,11 +17,11 @@ int main()
     // box size
     // upper left corner of the box is at (0, 0)
     // bottom right at BOX_XY
-    const vec2f BOX_XY(100, 100);
+    const vec2f BOX_XY(200, 200);
 
     // box in which particles start
     // from (0, 0) to BOX_S
-    const vec2f BOX_S(50, 50);
+    const vec2f BOX_S(20, 20);
 
     // particle radius
     const float RAD = 0.2;
@@ -39,7 +39,7 @@ int main()
     symul symulation = symul(PAR_N, RAD, BOX_XY, BOX_S, SPEED);
     std::vector<particle> particles = symulation.getParticles();
 
-    entropy ent(BOX_XY.getX() / 20, SPEED / 2, 20, 4, SPEED, particles.size());
+    entropy ent(BOX_XY.getX() / 10, SPEED / 3, 10, 6, SPEED, particles.size());
 
     chart chart2D;
     chart2D.createWindow(800, 400, "Wykres entropii od czasu");
@@ -89,9 +89,7 @@ int main()
         
         if (tick == 1) {
             chart2D.zoom(e);
-            
         }
-
      
         chart2D.chartUpdate(tick, e);
         chart2D.pollEvents();
