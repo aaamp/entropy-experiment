@@ -17,12 +17,15 @@ void chart::createWindow(unsigned x, unsigned y, std::string des)
 void chart::chartReDraw()const
 {
     window.clear(sf::Color::Black);
-
+   
 
     sf::RectangleShape axis_OX(sf::Vector2f(100000, 2));
     sf::RectangleShape axis_OY(sf::Vector2f(100000, 2));
     axis_OY.setPosition(-1, 0);
     axis_OX.setPosition(0, 0);
+
+    axis_OX.setFillColor(sf::Color(100, 250, 50));
+    axis_OY.setFillColor(sf::Color(100, 250, 50));
 
     axis_OY.rotate(270);
     window.draw(axis_OX);
@@ -33,22 +36,28 @@ void chart::chartReDraw()const
     int y = view.getSize().y / 2 + 1;
 
 
-    int ax = (view.getCenter().x - x) /100;
+    double ax  = int((view.getCenter().x - x) /100);
     int ay = (-view.getCenter().y - y)/100 ;
 
-    if (ax < 0)
-        ax = 0;
+    if (ax  < 0)
+        ax  = 0;
     if (ay < 0)
         ay = 0;
 
 
-    for (ax; ax < view.getCenter().x + x; ax += 100)
+    if (lastPoint.size() > (view.getCenter().x + x)*scal && change)
+        scal += 0.5;
+       // scal= lastPoint.size()/ (view.getCenter().x + view.getSize().x / 2);
+  
+
+    for (ax ; ax  < view.getCenter().x + x; ax  += 100/scal)
     {
         sf::RectangleShape line(sf::Vector2f(40, 2));
-        line.setPosition(ax + 1, 0);
+        line.setFillColor(sf::Color(100, 250, 50));
+        line.setPosition(ax  + 1, 0);
         line.rotate(90);
         window.draw(line);
-        if (ax % 500 == 0)
+        if (ax  - 500 == 0)
         {
             // tutaj dodac jednostke 
         }
@@ -58,6 +67,7 @@ void chart::chartReDraw()const
     for (ay; ay < -view.getCenter().y + y; ay += 100)
     {
         sf::RectangleShape line(sf::Vector2f(40, 2));
+        line.setFillColor(sf::Color(100, 250, 50));
         line.setPosition(-40, -ay);
         window.draw(line);
         if (ay % 500 == 0)
@@ -75,8 +85,8 @@ void chart::chartReDraw()const
 
         sf::Vertex line[] =
         {
-            sf::Vertex(sf::Vector2f(i - 1, -lastPoint[i - 1])),
-            sf::Vertex(sf::Vector2f(i, -lastPoint[i]))
+            sf::Vertex(sf::Vector2f((i - 1)/scal, -lastPoint[i - 1])),
+            sf::Vertex(sf::Vector2f(i/scal, -lastPoint[i]))
         };
 
         window.draw(line, 2, sf::Lines);
@@ -143,9 +153,15 @@ void chart::pollEvents() const
             case sf::Keyboard::F:
                 view.setCenter(0, -lastPoint[0]);
                 break;
+            case sf::Keyboard::X:
+                change ^=1 ;
+                break;
             case sf::Keyboard::C:
                 if(lastPoint.size()>0)
-                view.setCenter(lastPoint.size()-1, -lastPoint[lastPoint.size()-1]);
+                view.setCenter((lastPoint.size()-1)/scal, -lastPoint[lastPoint.size()-1]);
+                break;
+            case sf::Keyboard::R:
+                scal=1;
                 break;
             case sf::Keyboard::P:
                 paused = !paused;

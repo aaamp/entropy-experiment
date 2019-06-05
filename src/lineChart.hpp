@@ -11,6 +11,8 @@ class chart {
 		mutable sf::View view;
 		std::vector <double> lastPoint;
 		float initZoom;
+        mutable double scal=1;
+        mutable bool change = 1;
 
     public:
 		void createWindow(unsigned x, unsigned y,std::string des);
