@@ -142,8 +142,6 @@ void chart::pollEvents() const
                 window.setView(view);
 
             }();
-
-            chartReDraw();
         }
         if (event.type == sf::Event::KeyPressed)
         {
@@ -170,7 +168,6 @@ void chart::pollEvents() const
                 break;
             }
             window.setView(view);
-            chartReDraw();
         }
 
         if (event.type == sf::Event::MouseButtonPressed)
@@ -183,7 +180,6 @@ void chart::pollEvents() const
             mouseButtonDown = false;
         if (event.type == sf::Event::MouseMoved && mouseButtonDown)
         {
-
             if (mouseX || mouseY)
             {
                 view = window.getView();
@@ -192,7 +188,6 @@ void chart::pollEvents() const
             }
             mouseX = event.mouseMove.x;
             mouseY = event.mouseMove.y;
-            chartReDraw();
         }
     }
 }
