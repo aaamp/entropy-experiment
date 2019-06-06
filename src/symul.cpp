@@ -11,9 +11,7 @@ const std::vector<particle>& symul::moveParticles()
 {
     using posind = std::vector<std::pair<vec2f, int>>; 
 
-    // number of threads = number of buckets
-    // todo experiment with this
-    // should depend on number of particles and box size somehow
+    // number of threads == number of buckets
     int thrn = 15;
 
     // put positions in thrn buckets by their Y
@@ -28,6 +26,7 @@ const std::vector<particle>& symul::moveParticles()
             mybucket = thrn - 1;
         splited[mybucket].push_back(std::make_pair(particles[i].getPosition(), i));
     }
+    // put particles close to bucket edge in multiple buckets
     for(int b = 0; b < thrn; b++)
     {
         float myend = splited[b].back().first.getY() + particleR * 2;

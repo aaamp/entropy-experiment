@@ -35,7 +35,7 @@ int main()
     display.createWindow("Symulacja");
     
 
-    symul symulation = symul(PAR_N, RAD, BOX_XY, BOX_S, SPEED);
+    symul symulation = symul(PAR_N, RAD, BOX_XY, BOX_S, SPEED, 0.17);
     std::vector<particle> particles = symulation.getParticles();
 
     entropy ent(BOX_XY.getX() / 10, SPEED / 3, 10, 6, SPEED, particles.size());
@@ -52,9 +52,6 @@ int main()
         /*if(tick > 0)  
           std::this_thread::sleep_until(lastTime + std::chrono::milliseconds(100));
           lastTime = std::chrono::high_resolution_clock::now();*/
-
-        // To czy szybsza jest fizyka czy grafika zależy aktualnie od powiększenia obrazu,
-        // fizyka nie powoduje lagów.
 
         particles = symulation.getParticles();
 

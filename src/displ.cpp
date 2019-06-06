@@ -51,7 +51,6 @@ void displ::drawParticles(const std::vector<particle>& p)const
 			if (!viewBoundingBox.intersects(circle.getGlobalBounds()))
 				continue;
 
-			// Uwaga! 0.25 było wyznaczone eksperymentalnie!
 			temperature = i.getVelocity().getSquaredLength() * 1020.f; // * 255.f / 0.25f;
 			temperature = temperature < 255 ? temperature : 255;
 			circle.setFillColor(sf::Color(temperature, 0, 255 - temperature));
@@ -65,7 +64,6 @@ void displ::drawParticles(const std::vector<particle>& p)const
 		int temperature;
 		for(const auto& i : p)
 		{
-			// Uwaga! 0.25 było wyznaczone eksperymentalnie!
 			temperature = i.getVelocity().getSquaredLength() * 1020.f; // * 255.f / 0.25f;
 			temperature = temperature < 255 ? temperature : 255;
 			point.position = {i.getPosition().getX() - radius, i.getPosition().getY() - radius};

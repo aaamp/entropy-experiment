@@ -121,20 +121,6 @@ void chart::chartUpdate(double time, double entropy)
     lastPoint.push_back(entropy);
     chartReDraw();
     return;
-
-    /*
-    if (lastPoint.size() == 1)
-        return;
-
-    sf::Vertex line[] =
-    {
-        sf::Vertex(sf::Vector2f(time - 1, -lastPoint[lastPoint.size() - 2])),
-        sf::Vertex(sf::Vector2f(time, -entropy))
-    };
-
-    window.draw(line, 2, sf::Lines);
-    window.display();  */
-
 }
 
 void chart::pollEvents() const
