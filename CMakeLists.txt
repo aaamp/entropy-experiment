@@ -7,7 +7,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 project(entropy-experiment)
 
 if(MSVC)
-    add_compile_options(/W3 /O2 /MT)
+    add_compile_options(/W3 /MT)
 else()
     add_compile_options(-O3) 
 endif()
@@ -20,3 +20,4 @@ set(SFML_BUILD_AUDIO FALSE)
 
 add_subdirectory(thirdparty/SFML)
 add_subdirectory(src)
+

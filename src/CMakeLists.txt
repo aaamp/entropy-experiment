@@ -1,4 +1,11 @@
-﻿set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/Release)
+﻿
+if(MSVC)
+    add_compile_options(/W3 /O2 /MT)
+else()
+    add_compile_options(-O3)
+endif()
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/Release)
 add_executable(entropy_experiment main.cpp symul.cpp particle.cpp displ.cpp entropy.cpp lineChart.cpp)
 
 #SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread")
