@@ -87,9 +87,6 @@ int main()
 
         entropy_arr.push_back(e);
         
-        if (tick == 1) {
-            chart2D.zoom(e);
-        }
      
         chart2D.chartUpdate(tick, e);
         chart2D.pollEvents();

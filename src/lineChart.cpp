@@ -7,7 +7,7 @@ void chart::createWindow(unsigned x, unsigned y, std::string des)
     settings.antialiasingLevel = 3;
 
     window.create(sf::VideoMode(x, y), des, sf::Style::Default || sf::Style::Close, settings);
-    view.reset(sf::FloatRect(0, 0, x, y));
+    view.reset(sf::FloatRect(-20, 0, x, y));
     window.setView(view);
 
     window.clear(sf::Color::Black);
@@ -18,7 +18,8 @@ void chart::chartReDraw()const
 {
     window.clear(sf::Color::Black);
    
-
+    view.setCenter(view.getCenter().x, -(minEntropy/scalY+(view.getSize().y /2)));
+    window.setView(view); 
     sf::RectangleShape axis_OX(sf::Vector2f(100000, 2));
     sf::RectangleShape axis_OY(sf::Vector2f(100000, 2));
     axis_OY.setPosition(-1, 0);
@@ -36,8 +37,8 @@ void chart::chartReDraw()const
     int y = view.getSize().y / 2 + 1;
 
 
-    double ax  = int((view.getCenter().x - x) /100);
-    int ay = (-view.getCenter().y - y)/100 ;
+    double ax  = ((view.getCenter().x - x) /(100*scal));
+    double ay = ((-view.getCenter().y - y)/(100*scalY));
 
     if (ax  < 0)
         ax  = 0;
@@ -49,6 +50,9 @@ void chart::chartReDraw()const
         scal += 0.5;
        // scal= lastPoint.size()/ (view.getCenter().x + view.getSize().x / 2);
   
+    if (maxEntropy > (-view.getCenter().y + view.getSize().y / 2)*scalY)
+        scalY += 0.1;
+
 
     for (ax ; ax  < view.getCenter().x + x; ax  += 100/scal)
     {
@@ -64,13 +68,13 @@ void chart::chartReDraw()const
 
     }
 
-    for (ay; ay < -view.getCenter().y + y; ay += 100)
+    for (ay; ay < -view.getCenter().y + y; ay += 100/scalY)
     {
         sf::RectangleShape line(sf::Vector2f(40, 2));
         line.setFillColor(sf::Color(100, 250, 50));
         line.setPosition(-40, -ay);
         window.draw(line);
-        if (ay % 500 == 0)
+        if (ay - 500 == 0)
         {
             // tutaj dodac jednostke 
         }
@@ -81,12 +85,13 @@ void chart::chartReDraw()const
     if (ax < 1)
         ax = 1;
 
+
     for (unsigned int i = ax; i < lastPoint.size(); i++) {
 
         sf::Vertex line[] =
         {
-            sf::Vertex(sf::Vector2f((i - 1)/scal, -lastPoint[i - 1])),
-            sf::Vertex(sf::Vector2f(i/scal, -lastPoint[i]))
+            sf::Vertex(sf::Vector2f((i - 1)/scal, -lastPoint[i - 1]/scalY)),
+            sf::Vertex(sf::Vector2f(i/scal, -lastPoint[i]/scalY))
         };
 
         window.draw(line, 2, sf::Lines);
@@ -96,6 +101,11 @@ void chart::chartReDraw()const
 
 void chart::chartUpdate(double time, double entropy)
 {
+    if (entropy < minEntropy)
+        minEntropy = entropy;
+    if (entropy > maxEntropy)
+        maxEntropy = entropy;
+
     lastPoint.push_back(entropy);
     chartReDraw();
     return;
@@ -159,6 +169,7 @@ void chart::pollEvents() const
                 view.setCenter((lastPoint.size()-1)/scal, -lastPoint[lastPoint.size()-1]);
                 break;
             case sf::Keyboard::R:
+                scalY = 1;
                 scal=1;
                 break;
             case sf::Keyboard::P:

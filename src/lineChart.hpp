@@ -12,6 +12,9 @@ class chart {
 		std::vector <double> lastPoint;
 		float initZoom;
         mutable double scal=1;
+        mutable double scalY = 1;
+        mutable double minEntropy=90000;
+        mutable double maxEntropy=0;
         mutable bool change = 1;
 
     public:
