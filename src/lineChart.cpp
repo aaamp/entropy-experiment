@@ -101,7 +101,7 @@ void chart::chartReDraw()const
 
 void chart::chartUpdate(double time, double entropy)
 {
-    if (entropy < minEntropy)
+    if (entropy < minEntropy || minEntropy < 0 )
         minEntropy = entropy;
     if (entropy > maxEntropy)
         maxEntropy = entropy;
