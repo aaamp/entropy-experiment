@@ -11,6 +11,8 @@ class chart {
 		mutable sf::View view;
 		std::vector <double> lastPoint;
 		float initZoom;
+		sf::Font font;
+		mutable sf::Text text;
         mutable double scal=1;
         mutable double scalY = 1;
         mutable double minEntropy=-1;

@@ -12,6 +12,12 @@ void chart::createWindow(unsigned x, unsigned y, std::string des)
 
     window.clear(sf::Color::Black);
     window.display();
+
+    font.loadFromFile("Roboto-Regular.ttf");
+    text.setFont(font);
+    text.setString("0");
+    text.setCharacterSize(25);
+    text.setFillColor(sf::Color::White);
 }
 
 void chart::chartReDraw()const
@@ -25,8 +31,8 @@ void chart::chartReDraw()const
     axis_OY.setPosition(-1, 0);
     axis_OX.setPosition(0, 0);
 
-    axis_OX.setFillColor(sf::Color(100, 250, 50));
-    axis_OY.setFillColor(sf::Color(100, 250, 50));
+    axis_OX.setFillColor(sf::Color::White);
+    axis_OY.setFillColor(sf::Color::White);
 
     axis_OY.rotate(270);
     window.draw(axis_OX);
@@ -47,8 +53,8 @@ void chart::chartReDraw()const
 
 
     if (lastPoint.size() > (view.getCenter().x + x)*scal && change)
-        scal += 0.5;
-       // scal= lastPoint.size()/ (view.getCenter().x + view.getSize().x / 2);
+       // scal += 0.5;
+        scal= lastPoint.size()/ (view.getCenter().x + view.getSize().x / 2);
   
     if (maxEntropy > (-view.getCenter().y + view.getSize().y / 2)*scalY)
         scalY += 0.1;
@@ -56,27 +62,33 @@ void chart::chartReDraw()const
 
     for (ax ; ax  < view.getCenter().x + x; ax  += 100/scal)
     {
-        sf::RectangleShape line(sf::Vector2f(40, 2));
-        line.setFillColor(sf::Color(100, 250, 50));
-        line.setPosition(ax  + 1, 0);
+        sf::RectangleShape line(sf::Vector2f(60, 2));
+        line.setFillColor(sf::Color::White);
+        line.setPosition(ax, 0);
         line.rotate(90);
         window.draw(line);
-        if (ax  - 500 == 0)
+        //if (int(ax) % 50 == 0)
         {
-            // tutaj dodac jednostke 
+            text.setPosition(ax, 60);
+            text.setString(std::to_string(int(ax)));
+            window.draw(text);
+
         }
 
     }
 
     for (ay; ay < -view.getCenter().y + y; ay += 100/scalY)
     {
-        sf::RectangleShape line(sf::Vector2f(40, 2));
-        line.setFillColor(sf::Color(100, 250, 50));
-        line.setPosition(-40, -ay);
+        sf::RectangleShape line(sf::Vector2f(60, 2));
+        line.setFillColor(sf::Color::White);
+        line.setPosition(-60, -ay);
         window.draw(line);
-        if (ay - 500 == 0)
+        //if (int(ay)  % 50 == 0)
         {
-            // tutaj dodac jednostke 
+            text.setPosition(-60, -ay);
+            text.setString(std::to_string(int(ay)));
+            window.draw(text);
+
         }
 
     }
@@ -107,6 +119,7 @@ void chart::chartUpdate(double time, double entropy)
         maxEntropy = entropy;
 
     lastPoint.push_back(entropy);
+    chartReDraw();
     return;
 
     /*
@@ -143,9 +156,9 @@ void chart::pollEvents() const
         {
             [&, this]() {
                 view = window.getView();
-                if (event.mouseWheelScroll.delta < 0.f && view.getSize().x / (float)window.getSize().x + view.getSize().y / (float)window.getSize().y < 0.01f)
+                if (event.mouseWheelScroll.delta < 0.f && view.getSize().x / (float)window.getSize().x + view.getSize().y / (float)window.getSize().y < 0.001f)
                     return;
-                if (event.mouseWheelScroll.delta > 0.f && view.getSize().x / (float)window.getSize().x + view.getSize().y / (float)window.getSize().y > 14.f)
+                if (event.mouseWheelScroll.delta > 0.f && view.getSize().x / (float)window.getSize().x + view.getSize().y / (float)window.getSize().y > 36.f)
                     return;
                 view.zoom((event.mouseWheelScroll.delta > 0.f) * 1.2f + (event.mouseWheelScroll.delta < 0) * 0.8f);
                 window.setView(view);
