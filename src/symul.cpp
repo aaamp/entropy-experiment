@@ -14,25 +14,32 @@ const std::vector<particle>& symul::moveParticles()
     // number of threads = number of buckets
     // todo experiment with this
     // should depend on number of particles and box size somehow
-    const int thrn = 15;
+    int thrn = 15;
 
     // put positions in thrn buckets by their Y
-    float buckLen = box.getY() / thrn;
+    int buckLen = particles.size() / thrn;
     std::vector<posind> splited(thrn);
     for(auto& i : splited)
         i.reserve(particles.size() * 2 / thrn);
     for(int i = 0; i < particles.size(); i++)
     {
         int mybucket = static_cast<int>(std::floor(particles[i].getPosition().getY() / buckLen));
-        if(mybucket < 0)
-            mybucket = 0;
         if(mybucket >= thrn)
-            mybucket = thrn;
+            mybucket = thrn - 1;
         splited[mybucket].push_back(std::make_pair(particles[i].getPosition(), i));
-        if(mybucket > 0 && particles[i].getPosition().getY() - (buckLen * mybucket) < 2 * particleR)
-            splited[mybucket - 1].push_back(splited[mybucket].back());
-        //if(mybucket < thrn - 1 && (mybucket + 1) * buckLen - particles[i].getPosition().getY() < 2 * particleR)
-            //splited[mybucket + 1].push_back(splited[mybucket].back());
+    }
+    for(int b = 0; b < thrn; b++)
+    {
+        float myend = splited[b].back().first.getY() + particleR * 2;
+        for(int other = b + 1; other < thrn; other++)
+        {
+            for(auto p : splited[other])
+            {
+                if(p.first.getY() > myend)
+                    break;
+                splited[b].push_back(p);
+            }
+        }
     }
 
     // function that returns collisions from one bucket

@@ -31,7 +31,6 @@ int main()
     const float SPEED = 0.3;
 
 
-
     displ display(RAD, BOX_XY);
     display.createWindow("Symulacja");
     
