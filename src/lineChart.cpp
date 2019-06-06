@@ -16,7 +16,7 @@ void chart::createWindow(unsigned x, unsigned y, std::string des)
     font.loadFromFile("Roboto-Regular.ttf");
     text.setFont(font);
     text.setString("0");
-    text.setCharacterSize(25);
+    text.setCharacterSize(14);
     text.setFillColor(sf::Color::White);
 }
 
@@ -70,7 +70,7 @@ void chart::chartReDraw()const
         //if (int(ax) % 50 == 0)
         {
             text.setPosition(ax, 60);
-            text.setString(std::to_string(int(ax)));
+            text.setString(std::to_string(int(ax*scal)));
             window.draw(text);
 
         }
@@ -86,7 +86,7 @@ void chart::chartReDraw()const
         //if (int(ay)  % 50 == 0)
         {
             text.setPosition(-60, -ay);
-            text.setString(std::to_string(int(ay)));
+            text.setString(std::to_string(int(ay*scalY)));
             window.draw(text);
 
         }
