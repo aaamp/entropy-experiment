@@ -44,8 +44,6 @@ int main()
     chart2D.createWindow(800, 400, "Wykres entropii od czasu");
     chart2D.chartReDraw();
 
-    std::vector<double> entropy_arr;
-
     auto lastTime = std::chrono::high_resolution_clock::now();
     for(int tick = 0; tick < 100000; tick++)
     {
@@ -68,27 +66,28 @@ int main()
             ent.ClearBoxes();
             ent.GroupParticles(&particles);
             return ent.calcEntropy();
-            //double probability = pow(exp(1), entropy); //nie wiem, czy jest Wam to do szczęścia potrzebne, feel free to comment
         });
 
         display.drawParticles(particles);
         display.pollEvents();
+
+        chart2D.chartReDraw();
+        chart2D.pollEvents();
 
         while (symulTask.wait_for(std::chrono::milliseconds(20)) != std::future_status::ready
             || entropyTask.wait_for(std::chrono::milliseconds(20)) != std::future_status::ready)
         {
             display.drawParticles(particles);
             display.pollEvents();
+            chart2D.chartReDraw();
+            chart2D.pollEvents();
         }
 
         double e = entropyTask.get();
         std::cout << "Entropy: " << e << std::endl;
 
-        entropy_arr.push_back(e);
-        
-     
         chart2D.chartUpdate(tick, e);
-        chart2D.pollEvents();
+
     }
 }
 

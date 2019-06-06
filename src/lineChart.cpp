@@ -107,7 +107,6 @@ void chart::chartUpdate(double time, double entropy)
         maxEntropy = entropy;
 
     lastPoint.push_back(entropy);
-    chartReDraw();
     return;
 
     /*
